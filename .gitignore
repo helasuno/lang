@@ -1,0 +1,19 @@
+# Python caches
+src/__pycache__/
+src/etc/__pycache__/
+src/interpreter/__pycache__/
+src/maple/__pycache__/
+src/maple/error/__pycache__/
+src/statements/__pycache__/
+src/tools/__pycache__/
+tests/__pycache__/
+
+# macOS specific files
+*/.DS_Store
+.DS_Store
+
+# Packaged versions of the interpreter
+dist/
+src/__main__.onefile-build/
+src/__main__.build/
+src/__main__.dist/

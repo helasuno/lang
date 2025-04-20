@@ -10,9 +10,6 @@ The entire language is written in pure Python (>= 3.10) with no third party depe
 
 | Path | Description |
 |---|---|
-| docs/ | This is the website for the language including documentation. Install `mkdocs-material` and build the website with `mkdocs build` or `make web`.|
-| img/ | Artwork for the project |
-| samples/ | Sample code and scripts to test the language. Expect this directory's contents to change frequently |
 | src/ | Source code for the interpreter. |
 | tests/ | Unit tests. |
 | tools/ | Tools for use in the language. |
