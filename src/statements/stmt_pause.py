@@ -48,18 +48,8 @@ def stmt_pause(tokens: list):
 
     # Get the requested pause length
     pause_length = tokens[2]['token_value']
-    # Get the type of the token. This gets the label for the token type and
-    # we're looking for 'NUMBER'.
-    pause_length_type = tokens[2]['token_type'][1]
     # Get the line number
     line_number = tokens[0]['script_line_number']
-
-    if pause_length_type != 'NUMBER':
-        messenger.line_error(
-            'The value passed to the pause statement needs to be a number.',
-            line_no=line_number,
-            error_code=24
-        )
 
     # Substitute variables in the pause length
     pause_length = helpers.substitute_values(pause_length, line_number)
