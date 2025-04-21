@@ -1,5 +1,5 @@
 # This is a catch all for cleaning up any old bytecode, rebuilding the bytecode and packaging both a zipapp and source distributions
-all: clean bytecode package source vscode
+all: clean bytecode package source
 
 binary:
 	@mkdir -p dist/
@@ -23,10 +23,6 @@ clean:
 	@rm -rf ./src/statements/__pycache__/
 	@rm -rf ./src/tools/__pycache__/
 	@rm -rf ./tests/__pycache__/
-
-# Make the docs
-web:
-	@mkdocs build
 
 # Install Helasuno to /usr/local/bin/
 install: dist/hs
