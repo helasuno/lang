@@ -39,3 +39,7 @@ source:
 	@mkdir -p dist/
 	@tar -cjf dist/helasuno.tar.bz2 src
 	@zip -r -q dist/helasuno.zip src
+
+# Uninstall the interpreter if it's been installed.
+uninstall:
+	@rm -f /usr/local/bin/hs
