@@ -27,6 +27,8 @@ clean:
 # Install Helasuno to /usr/local/bin/
 install: dist/hs
 	@cp dist/hs /usr/local/bin/
+	@chmod 755 /usr/local/bin/hs
+	@chmod +x /usr/local/bin/hs
 
 package:
 	@mkdir -p dist/
