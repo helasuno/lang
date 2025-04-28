@@ -6,12 +6,12 @@ import math
 import os
 import shutil
 import stat
+import sys
 import time
 import zipapp
 
 # Custom imports
 from src.etc import (colourise, global_values)
-# import parser.parser
 
 '''Copyright 2024-2025 Bryan Smith.
 
@@ -40,6 +40,11 @@ This packages the interpreter as a zipapp executable bundle.
 NAME = global_values.LANG_NAME_ACRONYM
 VERSION = global_values.LANG_VERSION
 
+PY_MINOR_VERSION = int(global_values.PYTHON_VERSION[1])
+PY_MINOR_VERSION_MINIMUM = global_values.PYTHON_VERSION_MINIMUM_MINOR
+PY_VERSION = f'{global_values.PYTHON_VERSION[0]}.' + \
+    f'{global_values.PYTHON_VERSION[1]}'
+
 DIST = 'dist/'
 INTERPRETER = '/usr/bin/env python3'
 
@@ -65,12 +70,27 @@ def print_status(message, bright=False):
         output = f'    {colourise.red(":: ")} {colourise.yellow(message)}'
     else:
         # Simple function to facilitate progress reporting
-        output = f'    {colourise.blue(":: ")} {colourise.cyan(message)}'
+        output = f'    {colourise.blue("\u2713 ")} {colourise.cyan(message)}'
     print(output)
 
 
+# Check that the version of Python installed is sufficient. Here, we are
+# checking to see that the minor version is not lower than the minimum.
+if PY_MINOR_VERSION < PY_MINOR_VERSION_MINIMUM:
+    # Print an error message
+    print_status(
+        f'The version of Python you are running ({PY_VERSION}) ' +
+        'is too low. Please upgrade to at least ' +
+        f'{global_values.PYTHON_VERSION_MINIMUM}.',
+        bright=True
+    )
+    # Exit the script
+    sys.exit(0)
+
+# Print out a blank space at the beginning
 print('')
 print(colourise.magenta(f'{global_values.LANG_NAME} Packager'))
+print_status(f'Python version installed ({PY_VERSION}) is new enough...')
 # Set up the DIST directory
 print_status(f'Checking for {DIST} directory and creating if need be...')
 # If the build directory does not exist...
@@ -139,6 +159,19 @@ minutes = math.floor(diff/60)
 # Get the modulo to get the remainder, that is, the "0.05" from above
 seconds = round(diff % 60)
 
+# Print out the results
 print(
-    colourise.green(f'\n    ::  Time: {minutes} min, {seconds} sec\n')
+    colourise.green(f'\n    ::  Time: {minutes} min, {seconds} sec')
 )
+
+# Get the size of the zipapp
+package_size = os.stat(zipapp_loc)
+# Convert the bytes to kilobytes
+package_size = round(package_size.st_size / 1024, 2)
+# Print out the package size
+print(
+    colourise.green(f'    ::  Package Size: {package_size} KB')
+)
+
+# Print out an extra line to space things out
+print()
