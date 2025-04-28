@@ -4,6 +4,7 @@
 import compileall
 import math
 import os
+import platform
 import shutil
 import stat
 import sys
@@ -37,17 +38,21 @@ SOFTWARE.
 This packages the interpreter as a zipapp executable bundle.
 '''
 
+# Get language and version info
 NAME = global_values.LANG_NAME_ACRONYM
 VERSION = global_values.LANG_VERSION
 
+# Get Python related info
 PY_MINOR_VERSION = int(global_values.PYTHON_VERSION[1])
 PY_MINOR_VERSION_MINIMUM = global_values.PYTHON_VERSION_MINIMUM_MINOR
 PY_VERSION = f'{global_values.PYTHON_VERSION[0]}.' + \
     f'{global_values.PYTHON_VERSION[1]}'
 
+# Set some key info for packaging
 DIST = 'dist/'
 INTERPRETER = '/usr/bin/env python3'
 
+# Start a timer for timing the packaging
 START = time.time()
 
 
@@ -90,6 +95,7 @@ if PY_MINOR_VERSION < PY_MINOR_VERSION_MINIMUM:
 # Print out a blank space at the beginning
 print('')
 print(colourise.magenta(f'{global_values.LANG_NAME} Packager'))
+# Report that we have a new enough Python version installed
 print_status(f'Python version installed ({PY_VERSION}) is new enough...')
 # Set up the DIST directory
 print_status(f'Checking for {DIST} directory and creating if need be...')
@@ -171,6 +177,36 @@ package_size = round(package_size.st_size / 1024, 2)
 # Print out the package size
 print(
     colourise.green(f'    ::  Package Size: {package_size} KB')
+)
+
+# Get the split character for the PATH. As always, Windows does something
+# different so account for that here. If the platform is Windows, the split
+# character in the PATH environment variable is a semicolon and if you're
+# using anything else, it's a colon.
+if platform.system() == 'Windows':
+    os_path_split = ';'
+else:
+    os_path_split = ':'
+
+# Get the PATH environment variable, split by the path split character
+# Thanks to https://stackoverflow.com/questions/4906977/how-can-i-access-
+# environment-variables-in-python
+dirs_in_path = os.environ.get('PATH').split(os_path_split)
+# Print out info about the PATH
+print(
+    colourise.yellow(
+        '\nEach of the following directories is in your PATH:'
+    )
+)
+# Print out each directory in the PATH
+for path in dirs_in_path:
+    print(f'     - {path}')
+print(
+    colourise.yellow(
+        'Consult the documentation for your operating system to see where ' +
+        'the interpreter is best placed should you want the app to be ' +
+        'available without having to provide the full path to it each time.'
+    )
 )
 
 # Print out an extra line to space things out
