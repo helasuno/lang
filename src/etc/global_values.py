@@ -50,6 +50,6 @@ PLAT_SYSTEM = platform.system()
 # Python version
 PYTHON_VERSION = platform.python_version_tuple()
 # Minimum Python version
-PYTHON_VERSION_MINIMUM = '3.10'
+PYTHON_VERSION_MINIMUM = '3.12'
 # Minimum Python version (minor)
-PYTHON_VERSION_MINIMUM_MINOR = 10
+PYTHON_VERSION_MINIMUM_MINOR = 12
