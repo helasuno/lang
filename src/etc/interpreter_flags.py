@@ -3,6 +3,9 @@
 # Standard library imports
 import sys
 
+# Custom imports
+from maple.error import messenger
+
 '''Copyright 2024-2025 Bryan Smith.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -58,7 +61,16 @@ def reline(script_name: str):
                 relined_script += line + '\n'
     # If the file isn't found, notify the user and abandon ship
     except FileNotFoundError:
-        print(f'{script_name} is not a valid script')
+        if script_name == '':
+            messenger.simple_error(
+                'No script name was passed to the interpreter.',
+                error_code=10
+            )
+        else:
+            messenger.simple_error(
+                f'{script_name} is not a valid script',
+                error_code=9
+            )
         sys.exit(0)
 
     # Open up the new file

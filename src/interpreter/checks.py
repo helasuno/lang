@@ -105,7 +105,7 @@ def check_flags(opts, script_name):
             case '-e':
                 codes.error_elaborator(opt_value)
             case '-h':
-                print(colourise.yellow(':: HELP ::'))
+                print(colourise.yellow('\n:: HELP ::'))
                 print(
                     f'{global_values.LANG_NAME} {global_values.LANG_VERSION}'
                 )

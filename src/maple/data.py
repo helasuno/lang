@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 # Standard library imports
+import datetime
 import locale
+import pathlib
 import pprint
 import statistics
 import time
@@ -196,7 +198,7 @@ def print_dev_data(
                     tree_avg,
                     tree_median,
                     tree_stdev):
-    """Output data relevant to interpretation
+    """Output data relevant to interpretation and save the results to disk
 
     Args:
         script_name: the name of the script
@@ -235,9 +237,10 @@ def print_dev_data(
     # Get the length of the tree
     print(f'{"Tree Length:".rjust(padding)} {num_lines}')
     # Average line length in tokens, rounded to two decimal places
+    avg_tokens = round(num_tokens/num_lines, 2)
     print(
         f'{"Average Tokens per Line:".rjust(padding)} ' +
-        f'{round(num_tokens/num_lines, 2)}'
+        f'{avg_tokens}'
     )
 
     print(colourise.green('\nTOKENISATION'))
@@ -255,3 +258,64 @@ def print_dev_data(
     print(f'{"Tree Building Time [MEDIAN]:".rjust(padding)} {tree_median}')
     # Get the standard deviation for tree building
     print(f'{"Tree Building Time [STDEV]:".rjust(padding)} {tree_stdev}')
+
+    # Get the date and time for storing in the ~/.hs_profile.json file
+    date_time = datetime.datetime.now()
+    # Get a more friendly version of the date.
+    # Thanks to https://www.geeksforgeeks.org/how-to-add-leading-zeros-to-a-
+    # number-in-python/.
+    perf_test_date = f'{date_time.year}/{date_time.month:02d}/' + \
+        f'{date_time.day:02d}'
+    perf_test_time = f'{date_time.hour:02d}:{date_time.minute:02d}:' + \
+        f'{date_time.second:02d}'
+
+    # Print out the success of the test
+    print(colourise.magenta(f'\n:: Performance test complete at {date_time}'))
+
+    # Get home directory to write out the results to a JSON file at
+    # ~/.hs_profile.
+    data_file = f'{str(pathlib.Path.home())}/.hs_profile.csv'
+    # Collect the data in a dictionary
+    data = {
+        'date': perf_test_date,
+        'time': perf_test_time,
+        'executions': global_values.PERF_CHECK_EXECUTIONS,
+        'num_tokens': num_tokens,
+        'num_lines': num_lines,
+        'avg_tokens': avg_tokens,
+        'token_avg': token_avg,
+        'token_median': token_median,
+        'token_stdev': token_stdev,
+        'tree_avg': tree_avg,
+        'tree_median': tree_median,
+        'tree_stdev': tree_stdev,
+    }
+
+    print(colourise.magenta(f':: Data added to {data_file}!\n'))
+
+    # Set up the contents variable that will house the final CSV output
+    contents = ''
+    # Check to see if the ~/.hs_profile file exists
+    if pathlib.Path(data_file).exists() is False:
+        # If not, create our header row
+        for key, _ in data.items():
+            # Add the key (ie. the column header) to a running row
+            contents += f'{key},'
+        # Strip off the extra comma at the end
+        contents = contents.strip(',')
+        # Add a line after so that the data can be added to the file under
+        # the header
+        contents += '\n'
+
+    # Loop over the values of the dictionary (ie. our data) and add it to the
+    # contents variable
+    for _, value in data.items():
+        contents += f'{value},'
+
+    # Strip off the lingering comma
+    contents = contents.strip(',')
+
+    # Open up the data file in append mode
+    with open(data_file, 'a') as output:
+        # Write the contents
+        output.write(f'\n{contents}')

@@ -90,89 +90,114 @@ modes = checks.check_flags(opts, script_name)
 # Whether we are running in dev mode
 dev_mode = modes['dev_mode']
 
-# Performance mode
+# Whether we are running a performance check
 performance_check = modes['performance_check']
 
-try:
-    # With an open script handler
-    with open(script_name, 'r') as script:
-        # Read the script
-        contents = script.read()
-        # Split the script into lines which will themselves serves as branches
-        # in Maple.
-        lines_of_script = contents.split('\n')
 
-        # Time to hand over to the arborist to check in on the script before
-        # the token tree is planted (ie. built). Do this by passing the lines
-        # to the checks module that runs through the functions in the arborist.
-        checks.run_arborist_checks(lines_of_script)
+def main():
+    """Start the ball rolling by opening the script, doing some quick checks
+    and passing off to xylem to start parsing.
 
-        # Prune the comments from the script so that they don't get parsed by
-        # the planter. This is helpful, as well, in minimising the number of
-        # possible errors as any uncaught parsing errors that might be
-        # triggered by a comment are removed
-        lines_for_parsing = arborist.prune_comments(lines_of_script)
+    Args:
+        tokens [list]: the list of tokens on the line with the end statement
+            call
 
-        # Now, we turn over to the planter to start building, bit by bit, the
-        # tokens first and then the TOKEN_TREE which serves as the basis for
-        # executing commands. If performance check is enabled, calculate the
-        # timing of the tokenisation instead.
-        if performance_check:
-            # Run a tokenisation performance check
-            tokenisation_data = data.perf_tokenisation(lines_for_parsing)
-            # Print a new line
-            print('\r')
-            # Run a tree planting performance check
-            tree_data = data.perf_tree_planting()
-            # Print a new line
-            print('\n')
-            # Print out the data
-            data.print_dev_data(
-                script_name,
-                tokenisation_data['average'],
-                tokenisation_data['median'],
-                tokenisation_data['stdev'],
-                tree_data['average'],
-                tree_data['median'],
-                tree_data['stdev']
-            )
-            # Exit as we aren't executing the script
-            sys.exit(0)
-        # Otherwise, tokenise and build the TOKEN_TREE without calculating
-        # how long it takes.
-        else:
-            # Build the tokens
-            token_planter = planter.build_tokens(lines_for_parsing)
-            # If index 0 is True, it means that the tokeniser has errored out
-            # so report the error.
-            if token_planter[0] is True:
-                # Index 3 is the line number, index 1 is the error message
-                messenger.line_error(
-                    token_planter[1],
-                    line_no=token_planter[3],
-                    error_code=8
+    Returns:
+        N/A
+
+    Raises:
+        None
+    """
+
+    try:
+        # With an open script handler
+        with open(script_name, 'r') as script:
+            # Read the script
+            contents = script.read()
+            # Split the script into lines which will themselves serves as
+            # branches in Maple.
+            lines_of_script = contents.split('\n')
+
+            # Time to hand over to the arborist to check in on the script
+            # before the token tree is planted (ie. built). Do this by passing
+            # the lines to the checks module that runs through the functions
+            # in the arborist.
+            checks.run_arborist_checks(lines_of_script)
+
+            # Prune the comments from the script so that they don't get parsed
+            # by the planter. This is helpful, as well, in minimising the
+            # number of possible errors as any uncaught parsing errors that
+            # might be triggered by a comment are removed
+            lines_for_parsing = arborist.prune_comments(lines_of_script)
+
+            # Now, we turn over to the planter to start building, bit by bit,
+            # the tokens first and then the TOKEN_TREE which serves as the
+            # basis for executing commands. If performance check is enabled,
+            # calculate the timing of the tokenisation instead.
+            if performance_check:
+                # Run a tokenisation performance check
+                tokenisation_data = data.perf_tokenisation(lines_for_parsing)
+                # Print a new line
+                print('\r')
+                # Run a tree planting performance check
+                tree_data = data.perf_tree_planting()
+                # Print a new line
+                print('\n')
+                # Print out the data
+                data.print_dev_data(
+                    script_name,
+                    tokenisation_data['average'],
+                    tokenisation_data['median'],
+                    tokenisation_data['stdev'],
+                    tree_data['average'],
+                    tree_data['median'],
+                    tree_data['stdev']
                 )
-            # Plant the tree
-            planter.build_tree()
+                # Exit as we aren't executing the script
+                sys.exit(0)
+            # Otherwise, tokenise and build the TOKEN_TREE without calculating
+            # how long it takes.
+            else:
+                # Build the tokens
+                token_planter = planter.build_tokens(lines_for_parsing)
+                # If index 0 is True, it means that the tokeniser has errored
+                # out so report the error.
+                if token_planter[0] is True:
+                    # Index 3 is the line number, index 1 is the error message
+                    messenger.line_error(
+                        token_planter[1],
+                        line_no=token_planter[3],
+                        error_code=8
+                    )
+                # Plant the tree
+                planter.build_tree()
 
-        # If developer mode is enabled...
-        if dev_mode:
-            data.get_token_data(script_name)
-            # Exit as we aren't executing the script
-            sys.exit(0)
+            # If developer mode is enabled...
+            if dev_mode:
+                data.get_token_data(script_name)
+                # Exit as we aren't executing the script
+                sys.exit(0)
 
-        # Start executing statements by checking where we need to start
-        # Since we are starting here at the start, we don't pass a value to
-        # set_execution_location() since we aren't starting at a specific spot
-        xylem.set_execution_location()
+            # Start executing statements by checking where we need to start
+            # Since we are starting here at the start, we don't pass a value to
+            # set_execution_location() since we aren't starting at a specific
+            # spot.
+            xylem.set_execution_location()
 
-except FileNotFoundError:
-    messenger.simple_error(
-        'The script could not be found. Double check that the file exists.',
-        error_code=9
-    )
-except NameError:
-    messenger.simple_error(
-        'It looks like you have not passed a script to the interpreter.',
-        error_code=10
-    )
+    except FileNotFoundError:
+        # This will catch any call where there is no script passed and/or one
+        # not found.
+        if script_name == "":
+            error_message = 'No script passed to the interpreter.'
+        else:
+            error_message = 'The script could not be found. Double check ' + \
+                'that the file exists.'
+        messenger.simple_error(error_message, error_code=9)
+    except NameError:
+        messenger.simple_error(
+            'It looks like you have not passed a script to the interpreter.',
+            error_code=10
+        )
+
+
+main()
