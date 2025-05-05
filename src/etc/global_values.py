@@ -38,6 +38,9 @@ LANG_NAME_ACRONYM = 'hs'
 LANG_NAME_LOWER = LANG_NAME.lower()
 # Language version
 LANG_VERSION = 0.1
+# Whether this is a development version or not.
+# FOR EACH RELEASE, MAKE SURE THIS IS SET TO FALSE
+LANG_DEV_VERSION = True
 
 # Get the platform architecture
 PLAT_ARCH = platform.machine()

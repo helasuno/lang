@@ -167,6 +167,13 @@ def check_flags(opts, script_name):
                 print(
                     f'Python {".".join(global_values.PYTHON_VERSION)}'
                 )
+                if global_values.LANG_DEV_VERSION is True:
+                    print(
+                        colourise.red(
+                            'NOTE: THIS IS A DEVELOPMENT VERSION OF THE ' +
+                            'LANGUAGE. EXPECT THAT THINGS WILL BREAK.'
+                        )
+                    )
                 sys.exit(0)
 
     return modes
