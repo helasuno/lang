@@ -135,7 +135,7 @@ elaborated_errors = {
             'one was provided but spelled wrong or a statement was called ' +
             'that doesn\'t exist.',
             '10 - This is a comment\n' +
-            '20 wrte "Hello World"\n' +
+            f'20 {colourise.red("wrte")} "Hello World"\n' +
             '30 end'
         ],
     13:  [
@@ -239,6 +239,17 @@ elaborated_errors = {
             f'20 jump {colourise.red("40")}\n'
             '30 end\n' +
             f'{colourise.red("_______________")}'
+        ],
+    24:  [
+            'Variable substitution failed because the variable ' +
+            'substitution character (' +
+            f'{colourise.yellow(values.VARIABLE_SYMBOL)}) was left on its ' +
+            'own. You need to escape it by providing the symbol twice: ' +
+            f'{colourise.yellow(values.VARIABLE_SYMBOL*2)}.',
+            '10 - This is a comment\n' +
+            '20 set name = "Helasuno"\n' +
+            f'30 writeln "Hello {colourise.red("#")} #name"\n' +
+            '40 end'
         ]
 }
 

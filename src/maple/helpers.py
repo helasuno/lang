@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # Standard library imports
+import sys
 from string import Template
 
 # Language imports
@@ -54,20 +55,38 @@ def substitute_values(expression: str, line_number: str) -> str:
         None
     """
     # Set up a templater for the variable by stripping quotation marks
-    variable_templater = VarTemplater(expression.strip("'"))
-    variable_templater = VarTemplater(expression.strip('"'))
+    variable_templater = VarTemplater(
+        expression.strip("'").strip('"')
+    )
+    # variable_templater = VarTemplater(expression.strip('"'))
     try:
         # Substitute the values in the string with variables
         expression = variable_templater.substitute(values.VARIABLES)
         # Return the variable substitutions
         return expression
+    # Catch a variable substitution that doesn't make sense (eg. a variable)
+    # is called for that hasn't been set.
     except KeyError as err:
+        # Strip off any single-quotation marls
         err = str(err).strip("'")
+        # Report back an error
         messenger.line_error(
             f'The variable name {err} is not set.',
             line_no=line_number,
             error_code=11
         )
+    # Caught in cases where, for instance, the variable symbol is used on its
+    # own without being escaped.
+    except ValueError:
+        # Report back an error
+        messenger.line_error(
+            f'The variable symbol - {values.VARIABLE_SYMBOL} - is provided ' +
+            'wihout a variable name.',
+            line_no=line_number,
+            error_code=24
+        )
+        print('VALUE!')
+        sys.exit(0)
 
 
 def calculate_value(expression: str) -> str:

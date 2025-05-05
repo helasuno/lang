@@ -3,6 +3,7 @@
 # Standard library imports
 import getopt
 import sys
+import time
 
 # Language imports
 from etc import (colourise)
@@ -135,6 +136,7 @@ def main():
             # basis for executing commands. If performance check is enabled,
             # calculate the timing of the tokenisation instead.
             if performance_check:
+                start_time = time.time()
                 # Run a tokenisation performance check
                 tokenisation_data = data.perf_tokenisation(lines_for_parsing)
                 # Print a new line
@@ -152,6 +154,13 @@ def main():
                     tree_data['average'],
                     tree_data['median'],
                     tree_data['stdev']
+                )
+                end_time = time.time()
+                perf_total_time = end_time - start_time
+                print(
+                    colourise.cyan(
+                        f':: Total Run Time: {perf_total_time} seconds'
+                    )
                 )
                 # Exit as we aren't executing the script
                 sys.exit(0)
