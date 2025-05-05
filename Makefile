@@ -24,6 +24,14 @@ clean:
 	@rm -rf ./src/tools/__pycache__/
 	@rm -rf ./tests/__pycache__/
 
+	@rm -rf ./src/.ruff_cache/
+	@rm -rf ./src/maple/.ruff_cache/
+	@rm -rf ./src/interpreter/.ruff_cache/
+	@rm -rf ./src/maple/error/.ruff_cache/
+	@rm -rf ./src/statements/.ruff_cache/
+	@rm -rf ./src/tools/.ruff_cache/
+	@rm -rf ./tests/.ruff_cache/
+
 # Install Helasuno to /usr/local/bin/
 install: dist/hs
 	@cp dist/hs /usr/local/bin/

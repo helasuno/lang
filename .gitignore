@@ -17,3 +17,6 @@ dist/
 src/__main__.onefile-build/
 src/__main__.build/
 src/__main__.dist/
+
+# Ruff specific folders
+*.ruff_cache/

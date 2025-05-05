@@ -109,7 +109,6 @@ def main():
     Raises:
         None
     """
-
     try:
         # With an open script handler
         with open(script_name, 'r') as script:

@@ -250,7 +250,19 @@ elaborated_errors = {
             '20 set name = "Helasuno"\n' +
             f'30 writeln "Hello {colourise.red("#")} #name"\n' +
             '40 end'
-        ]
+        ],
+    25:  [
+            f'The {colourise.yellow("write")} statement has too many ' +
+            'statement modifiers. Currently, you can only have ' +
+            f'{values.WRITE_STATMOD_COUNT} statmods for the ' +
+            f'{colourise.yellow("write")} statement. Cut down the number of ' +
+            'statmods that you have. Currently, valid statmods include ' +
+            f'{colourise.yellow(", ".join(values.VALID_STATMODS_WRITE))}.',
+            '10 - This is a comment\n' +
+            '20 writeln "Hello World" -> ' +
+            f'{colourise.red("\"lower|green|blue\"")}\n' +
+            '30 end\n'
+    ]
 }
 
 

@@ -5,6 +5,7 @@ import sys
 from string import Template
 
 # Language imports
+from etc import colourise
 from maple import values
 from maple.error import messenger
 
@@ -71,7 +72,7 @@ def substitute_values(expression: str, line_number: str) -> str:
         err = str(err).strip("'")
         # Report back an error
         messenger.line_error(
-            f'The variable name {err} is not set.',
+            f'The variable {colourise.yellow(err)} is not set.',
             line_no=line_number,
             error_code=11
         )

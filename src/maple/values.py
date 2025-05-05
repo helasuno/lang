@@ -83,4 +83,8 @@ VARIABLES = {
     f'{VARIABLE_PROHIBITED_PREFIX}lang_version': global_values.LANG_VERSION
 }
 
+# The variable symbol used in the substitution
 VARIABLE_SYMBOL = '#'
+
+# The maximum number of statmods
+WRITE_STATMOD_COUNT = 2

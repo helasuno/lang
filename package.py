@@ -117,6 +117,14 @@ try:
     shutil.rmtree('src/statements/__pycache__/')
     shutil.rmtree('src/tools/__pycache__/')
     shutil.rmtree('tests/__pycache__/')
+    # Remove the Ruff caches
+    shutil.rmtree('src/.ruff_cache/')
+    shutil.rmtree('src/etc/.ruff_cache/')
+    shutil.rmtree('src/maple/.ruff_cache/')
+    shutil.rmtree('src/maple/error/.ruff_cache/')
+    shutil.rmtree('src/statements/.ruff_cache/')
+    shutil.rmtree('src/tools/.ruff_cache/')
+    shutil.rmtree('tests/.ruff_cache/')
 # If a folder is not found, move on
 except FileNotFoundError:
     pass

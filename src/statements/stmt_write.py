@@ -67,6 +67,14 @@ def stat_moderator(
     # Split the statmod by the statmod_splitter operator
     statmod = statmod.split(values.VALID_OPERATORS['statmod_splitter'])
 
+    number_of_statmods = len(statmod)
+    if number_of_statmods > values.WRITE_STATMOD_COUNT:
+        messenger.simple_error(
+            f'You have too many statmods for the {colourise.yellow("write")}' +
+            f' statement. You can only have {values.WRITE_STATMOD_COUNT}.',
+            error_code=25
+        )
+
     # Thanks to https://stackoverflow.com/a/522578.
     # We need to loop over the statmods and remove any lingering quotation
     # marks.
