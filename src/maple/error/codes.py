@@ -188,10 +188,15 @@ elaborated_errors = {
         ],
     18:  [
             'The wrong operator is used to modify a statement. You need ' +
-            f'to use {colourise.yellow(values.VALID_OPERATORS["statmod"])}.',
+            f'to use {colourise.yellow(values.VALID_OPERATORS["statmod"])}. ' +
+            'It\'s also possible that this will be thrown when a + operator ' +
+            'is used to concatenate strings which is not allowed (yet at) ' +
+            f'least. Both lines {colourise.yellow("20")} and ' +
+            f'{colourise.yellow("30")} will throw this error.',
             '10 - This is a comment\n' +
             f'20 writeln "Hello World" {colourise.red("-")} green\n' +
-            '30 end'
+            f'30 writeln "Hello " {colourise.red("+")} "World"\n' +
+            '40 end'
         ],
     19:  [
             'An invalid statement modifier was provided to a ' +

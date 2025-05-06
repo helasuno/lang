@@ -3,8 +3,7 @@ Helasuno (hee-la-sue-no), coming from the (butchered) blending of the Esperanto 
 
 The entire language is written in pure Python (>= 3.12) with no third party dependencies. If it can't be done with the standard library, it won't be done.
 
-[See the homepage for more information](https://bryanabsmith.com/helasuno).
-
+[See the homepage for more information](https://bryanabsmith.com/helasuno). See also the [TESTING](TESTING.md) document for more about the status of language features.
 
 ### Layout
 
@@ -40,7 +39,14 @@ If you want to make the interpreter package and install it (in /usr/local/bin/),
 
 **NOTE: If you're using FreeBSD, you will need to install Python 3.12 from Ports (lang/python312). As of now (06/05/2025), FreeBSD's bianry packages of Python 3 are only 3.11.**
 
-#### Using the Interpreter
+#### Making a Release Build
+There are a few steps to making a release ready version of the interpreter:
+1. Run `make clean` to clean out the caches (pycaches and ruff caches).
+2. Set `etc/global_values.py` -> `LANG_DEV_VERSION` to `False`.
+3. Run `make` or `python3 package.py` to build the package.
+
+
+### Using the Interpreter
 Using Helasuno is similar to any other interpreter:
 
     helasuno [name of script]

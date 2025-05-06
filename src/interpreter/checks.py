@@ -195,7 +195,7 @@ def check_python_version():
 
     # If the version of Python installed is less than the minimum...
     if global_values.PYTHON_VERSION[0] == '3' and \
-            int(global_values.PYTHON_VERSION[1]) <= \
+            int(global_values.PYTHON_VERSION[1]) < \
             global_values.PYTHON_VERSION_MINIMUM_MINOR:
         # Report an error
         messenger.simple_error(

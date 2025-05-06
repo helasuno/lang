@@ -17,6 +17,7 @@ bytecode:
 clean:
 	@rm -rf dist/
 	@rm -rf ./src/__pycache__/
+	@rm -rf ./src/etc/__pycache__/
 	@rm -rf ./src/maple/__pycache__/
 	@rm -rf ./src/interpreter/__pycache__/
 	@rm -rf ./src/maple/error/__pycache__/
@@ -25,6 +26,7 @@ clean:
 	@rm -rf ./tests/__pycache__/
 
 	@rm -rf ./src/.ruff_cache/
+	@rm -rf ./src/etc/.ruff_cache/
 	@rm -rf ./src/maple/.ruff_cache/
 	@rm -rf ./src/interpreter/.ruff_cache/
 	@rm -rf ./src/maple/error/.ruff_cache/
