@@ -153,8 +153,8 @@ elaborated_errors = {
             'statement is trying to pause on the basis of an invalid ' +
             f'timeframe. Provide the {colourise.yellow("pause")} statement ' +
             'a simple integer.',
-            '10 - This is a comment\n'
-            f'20 pause {colourise.red("\"Hello World\"")}\n'
+            '10 - This is a comment\n' +
+            f'20 pause {colourise.red("\"Hello World\"")}\n' +
             '30 end'
         ],
     15:  [
