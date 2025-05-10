@@ -72,10 +72,12 @@ elaborated_errors = {
     5:  [
             'This error is thrown when there is not a valid end statement ' +
             'as the last statement in the script. All scripts need to have ' +
-            'an end statement on the final line to flag, for the ' +
-            'interpreter that the script is done executing. Think of this ' +
-            'as similar to telling the interpreter that you want to quit.',
-            '10 - This is a comment\n20 writeln "Hello World"\n' +
+            f'an {colourise.yellow("end")} statement on the final line to ' +
+            'flag, for the interpreter that the script is done executing. ' +
+            'This line must have the format\n' +
+            f'{colourise.yellow("\t[Line Number] end")}\n with no statmods.',
+            '10 - This is a comment\n' +
+            '20 writeln "Hello World"\n' +
             f'{colourise.red("_______________")}'
         ],
     6:  [
@@ -145,7 +147,7 @@ elaborated_errors = {
             f'{colourise.yellow("end")} statement itself.',
             '10 - This is a comment\n' +
             '20 write "Hello World"\n' +
-            f'30 end{colourise.red("_now")}'
+            f'30 end{colourise.red(" now")}'
         ],
     14:  [
             f'The {colourise.yellow("pause")} statement includes a ' +
@@ -199,9 +201,8 @@ elaborated_errors = {
             '40 end'
         ],
     19:  [
-            'An invalid statement modifier was provided to a ' +
-            f'{colourise.yellow("write")} or {colourise.yellow("writeln")} ' +
-            'statement. A list of valid statement modifiers will be ' +
+            'An invalid statement modifier was provided to a statement that ' +
+            'is invalid. A list of valid statement modifiers will be ' +
             'provided in the error message. Perhaps this was just a typo?',
             '10 - This is a comment\n' +
             f'20 writeln "Hello World" -> {colourise.red("fun")}\n' +
@@ -262,7 +263,11 @@ elaborated_errors = {
             f'{values.WRITE_STATMOD_COUNT} statmods for the ' +
             f'{colourise.yellow("write")} statement. Cut down the number of ' +
             'statmods that you have. Currently, valid statmods include ' +
-            f'{colourise.yellow(", ".join(values.VALID_STATMODS_WRITE))}.',
+            f'{colourise.yellow(", ".join(values.VALID_STATMODS_WRITE))}. ' +
+            'Note that the list of statmods is decided by splitting the ' +
+            f'list by the {values.VALID_OPERATORS["statmod_splitter"]} ' +
+            'symbol so something like two of them together will be read as ' +
+            'an empty statmod.',
             '10 - This is a comment\n' +
             '20 writeln "Hello World" -> ' +
             f'{colourise.red("\"lower|green|blue\"")}\n' +

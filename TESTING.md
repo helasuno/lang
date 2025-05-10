@@ -29,7 +29,7 @@ This section outlines the status of testing with each statement.
 
 | Statement | Status | Notes |
 |----|----|----|
-| end | &#8277; |  |
+| end | &#10003; | Works |
 | get | &#8277; |  |
 | jump | &#8277; |  |
 | pause | &#8277; |  |

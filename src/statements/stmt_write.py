@@ -4,7 +4,7 @@
 import sys
 
 # Language imports
-from maple import (helpers, values)
+from maple import (doctor, helpers, values)
 from maple.error import messenger
 from etc import colourise
 
@@ -54,15 +54,8 @@ def stat_moderator(
         None
     """
 
-    # If the operator isn't valid...
-    if operator != values.VALID_OPERATORS['statmod']:
-        # Report that back
-        messenger.line_error(
-            f'The operator provided to modify the statement ({operator}) is ' +
-            'not valid.',
-            line_no=line_number,
-            error_code=18
-        )
+    # Check with the doctor to see if the statmod operator is valid
+    doctor.check_statmod_operator(operator, line_number)
 
     # Split the statmod by the statmod_splitter operator
     statmod = statmod.split(values.VALID_OPERATORS['statmod_splitter'])

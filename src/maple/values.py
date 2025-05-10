@@ -54,6 +54,11 @@ VALID_STATEMENTS = {
     'end': 'end'
 }
 
+# List of valid statmods for the pause statement
+VALID_STATMODS_PAUSE = [
+    'countdown'
+]
+
 # List of valid statmods for the write(ln) statement
 VALID_STATMODS_WRITE = [
     'blue',
